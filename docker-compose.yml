@@ -1,15 +1,15 @@
-version: "3"
+version: "2"
 
 services:
     pippa_postgres:
         build:
-            context: ./
-            dockerfile: deployment/docker/postgres/Dockerfile
+            context: .
+            dockerfile: deploy/docker/postgres/Dockerfile
         container_name: pippa-postgres
         image: pippa-postgres
         restart: always
         ports:
-            - "8001:5432"
+            - "8801:5432"
         environment:
             - POSTGRES_DB=pippa
             - POSTGRES_USER=pippa
@@ -17,6 +17,27 @@ services:
         command: postgres -c synchronous_commit=off
         networks:
             - pippa
+
+    pippa_rabbit:
+        build:
+            context: .
+            dockerfile: deploy/docker/rabbit/Dockerfile
+        container_name: pippa-rabbit
+        image: pippa-rabbit
+        restart: always
+        ports:
+            - "8802:15671"
+            - "8803:15672"
+        environment:
+            - RABBITMQ_DEFAULT_USER=pippa
+            - RABBITMQ_DEFAULT_PASS=T7j8d8Af
+            - RABBITMQ_DEFAULT_VHOST=pippa
+            - RABBITMQ_NODENAME=rabbit
+        networks:
+            - pippa
+        labels:
+            kompose.service.type: nodeport
+            kompose.image-pull-policy: "Always"
 
 networks:
     pippa:
