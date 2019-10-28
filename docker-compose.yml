@@ -32,7 +32,7 @@ services:
             - RABBITMQ_DEFAULT_USER=pippa
             - RABBITMQ_DEFAULT_PASS=T7j8d8Af
             - RABBITMQ_DEFAULT_VHOST=pippa
-            - RABBITMQ_NODENAME=rabbit
+            - RABBITMQ_NODENAME=rabbit@pippa
         networks:
             - pippa
         labels:
