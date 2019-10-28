@@ -3,7 +3,7 @@ version: "2"
 services:
     pippa_postgres:
         build:
-            context: .
+            context: ./
             dockerfile: deploy/docker/postgres/Dockerfile
         container_name: pippa-postgres
         image: pippa-postgres
@@ -20,7 +20,7 @@ services:
 
     pippa_rabbit:
         build:
-            context: .
+            context: ./
             dockerfile: deploy/docker/rabbit/Dockerfile
         container_name: pippa-rabbit
         image: pippa-rabbit
