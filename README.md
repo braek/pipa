@@ -1,8 +1,8 @@
-# Yelp Data Pipeline
+# Pippa Data Pipeline
 
 ## Description
 
-Basic pipeline using RabbitMQ and PostgreSQL to fetch business data from Yelp.
+Basic ETL pipeline using RabbitMQ and PostgreSQL to fetch business data from Yelp.
 
 ## Virtual environment
 

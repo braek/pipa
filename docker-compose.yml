@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+    pippa_postgres:
+        build:
+            context: ./
+            dockerfile: deployment/docker/postgres/Dockerfile
+        container_name: pippa-postgres
+        image: pippa-postgres
+        restart: always
+        ports:
+            - "8001:5432"
+        environment:
+            - POSTGRES_DB=pippa
+            - POSTGRES_USER=pippa
+            - POSTGRES_PASSWORD=T7j8d8Af
+        command: postgres -c synchronous_commit=off
+        networks:
+            - pippa
+
+networks:
+    pippa:
+        driver: bridge
