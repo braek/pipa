@@ -1,7 +1,7 @@
-from pippa.workers import Worker
+from pippa.workers.base_worker import BaseWorker
 
 
-class ExtractWorker(Worker):
+class ExtractWorker(BaseWorker):
     def run(self):
         while True:
             print('EXTRACT WORKER')

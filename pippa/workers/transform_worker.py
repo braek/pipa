@@ -1,7 +1,7 @@
-from pippa.workers import Worker
+from pippa.workers.base_worker import BaseWorker
 
 
-class TransformWorker(Worker):
+class TransformWorker(BaseWorker):
     def run(self):
         while True:
             print('TRANSFORM WORKER')

@@ -1,7 +1,7 @@
-from pippa.workers import Worker
+from pippa.workers.base_worker import BaseWorker
 
 
-class LoadWorker(Worker):
+class LoadWorker(BaseWorker):
     def run(self):
         while True:
             print('LOAD WORKER')
