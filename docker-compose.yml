@@ -1,12 +1,11 @@
 version: "3.7"
 
 services:
-    pippa_postgres:
+    pippa-postgres:
         build:
-            context: .
+            context: ./
             dockerfile: deploy/docker/postgres/Dockerfile
         container_name: pippa-postgres
-        image: pippa-postgres
         restart: always
         ports:
             - "8801:5432"
@@ -14,16 +13,15 @@ services:
             - POSTGRES_DB=pippa
             - POSTGRES_USER=pippa
             - POSTGRES_PASSWORD=T7j8d8Af
-        command: postgres -c synchronous_commit=off
+        command: "postgres -c synchronous_commit=off"
         networks:
             - pippa
 
-    pippa_rabbit:
+    pippa-rabbit:
         build:
-            context: .
+            context: ./
             dockerfile: deploy/docker/rabbit/Dockerfile
         container_name: pippa-rabbit
-        image: pippa-rabbit
         restart: always
         ports:
             - "8802:5672"
@@ -33,6 +31,51 @@ services:
             - RABBITMQ_DEFAULT_PASS=T7j8d8Af
             - RABBITMQ_DEFAULT_VHOST=pippa
             - RABBITMQ_NODENAME=rabbit@pippa
+        networks:
+            - pippa
+        labels:
+            kompose.service.type: nodeport
+            kompose.image-pull-policy: "Always"
+
+    pippa-extract-worker:
+        build:
+            context: ./
+            dockerfile: deploy/docker/worker/Dockerfile
+        container_name: pippa-extract-worker
+        restart: always
+        command: ["extract_worker"]
+        links:
+            - pippa-rabbit
+        networks:
+            - pippa
+        labels:
+            kompose.service.type: nodeport
+            kompose.image-pull-policy: "Always"
+
+    pippa-transform-worker:
+        build:
+            context: ./
+            dockerfile: deploy/docker/worker/Dockerfile
+        container_name: pippa-transform-worker
+        restart: always
+        command: ["transform_worker"]
+        links:
+            - pippa-rabbit
+        networks:
+            - pippa
+        labels:
+            kompose.service.type: nodeport
+            kompose.image-pull-policy: "Always"
+
+    pippa-load-worker:
+        build:
+            context: ./
+            dockerfile: deploy/docker/worker/Dockerfile
+        container_name: pippa-load-worker
+        restart: always
+        command: ["load_worker"]
+        links:
+            - pippa-rabbit
         networks:
             - pippa
         labels:
